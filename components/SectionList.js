@@ -1,15 +1,8 @@
-'use strict';
+"use strict";
 
-import React, {
-  Component,
-  PropTypes,
-} from 'react';
-import ReactNative, {
-  StyleSheet,
-  View,
-  Text,
-  NativeModules,
-} from 'react-native';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ReactNative, { StyleSheet, View, Text, NativeModules } from "react-native";
 
 const { UIManager } = NativeModules;
 
@@ -17,7 +10,6 @@ const noop = () => {};
 const returnTrue = () => true;
 
 export default class SectionList extends Component {
-
   constructor(props, context) {
     super(props, context);
 
@@ -54,11 +46,11 @@ export default class SectionList extends Component {
     //  }
     //});
     //UIManager.findSubviewIn(e.target, rect, viewTag => {
-      //this.onSectionSelect(view, true);
+    //this.onSectionSelect(view, true);
     //})
     const targetY = ev.pageY;
     const { y, width, height } = this.measure;
-    if(!y || targetY < y){
+    if (!y || targetY < y) {
       return;
     }
     let index = Math.floor((targetY - y) / height);
@@ -82,7 +74,7 @@ export default class SectionList extends Component {
           width,
           height
         };
-      })
+      });
     }, 0);
   }
 
@@ -90,7 +82,7 @@ export default class SectionList extends Component {
     this.fixSectionItemMeasure();
   }
 
-  // fix bug when change data 
+  // fix bug when change data
   componentDidUpdate() {
     this.fixSectionItemMeasure();
   }
@@ -102,30 +94,26 @@ export default class SectionList extends Component {
   render() {
     const SectionComponent = this.props.component;
     const sections = this.props.sections.map((section, index) => {
-      const title = this.props.getSectionListTitle ?
-        this.props.getSectionListTitle(section) :
-        section;
+      const title = this.props.getSectionListTitle
+        ? this.props.getSectionListTitle(section)
+        : section;
 
-      const textStyle = this.props.data[section].length ?
-        styles.text :
-        styles.inactivetext;
+      const textStyle = this.props.data[section].length ? styles.text : styles.inactivetext;
 
-      const child = SectionComponent ?
-        <SectionComponent
-          sectionId={section}
-          title={title}
-        /> :
-        <View
-          style={styles.item}>
+      const child = SectionComponent ? (
+        <SectionComponent sectionId={section} title={title} />
+      ) : (
+        <View style={styles.item}>
           <Text style={[textStyle, this.props.fontStyle]}>{title}</Text>
-        </View>;
+        </View>
+      );
 
       //if(index){
-        return (
-          <View key={index} ref={'sectionItem' + index} pointerEvents="none">
-            {child}
-          </View>
-        );
+      return (
+        <View key={index} ref={"sectionItem" + index} pointerEvents="none">
+          {child}
+        </View>
+      );
       //}
       //else{
       //  return (
@@ -139,7 +127,9 @@ export default class SectionList extends Component {
     });
 
     return (
-      <View ref="view" style={[styles.container, this.props.style]}
+      <View
+        ref="view"
+        style={[styles.container, this.props.style]}
         onStartShouldSetResponder={returnTrue}
         onMoveShouldSetResponder={returnTrue}
         onResponderGrant={this.detectAndScrollToSection}
@@ -153,7 +143,6 @@ export default class SectionList extends Component {
 }
 
 SectionList.propTypes = {
-
   /**
    * A component to render for each section item
    */
@@ -177,26 +166,20 @@ SectionList.propTypes = {
   /**
    * A style to apply to the section list container
    */
-  style: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.object,
-  ]),
+  style: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
 
   /**
    * Text font size
    */
-  fontStyle: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.object,
-  ]),
+  fontStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object])
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    backgroundColor: 'transparent',
-    alignItems:'flex-end',
-    justifyContent:'center',
+    position: "absolute",
+    backgroundColor: "transparent",
+    alignItems: "flex-end",
+    justifyContent: "center",
     right: 5,
     top: 0,
     bottom: 0
@@ -207,12 +190,12 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontWeight: '700',
-    color: '#008fff'
+    fontWeight: "700",
+    color: "#008fff"
   },
 
   inactivetext: {
-    fontWeight: '700',
-    color: '#CCCCCC'
+    fontWeight: "700",
+    color: "#CCCCCC"
   }
 });
