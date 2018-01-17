@@ -113,15 +113,19 @@ export default class SelectableSectionsListView extends Component {
       if (typeof(this.props.compareFunction) === "function") {
         keys = keys.sort(this.props.compareFunction);
       }
-      const index = keys.indexOf(section);
+      const index = keys.indexOf(section),
+            nonDisplaySectionHeaders = 0,
+            nonDisplaySectionHeaderHeight = 0;
 
       let numcells = 0;
       for (var i = 0; i < index; i++) {
         numcells += this.props.data[keys[i]].length;
+        if (this.props.data[keys[i]].length == 0)
+          nonDisplaySectionHeaders++;
       }
-
+      nonDisplaySectionHeaderHeight = nonDisplaySectionHeaders * sectionHeaderHeight;
       sectionHeaderHeight = index * sectionHeaderHeight;
-      y += numcells * cellHeight + sectionHeaderHeight;
+      y += numcells * cellHeight + sectionHeaderHeight - nonDisplaySectionHeaderHeight;
       const maxY = this.totalHeight - this.containerHeight + headerHeight;
       y = y > maxY ? maxY : y;
 
